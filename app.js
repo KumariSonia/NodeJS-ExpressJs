@@ -1,30 +1,24 @@
-var http = require('http')
-var fs = require('fs')
+const express = require('express')
 
-var fileData;
-//reading file
-fs.readFile('Calc.js', 'utf8', function (err, data) {
-    fileData = data
-})
+var app = express();
+app.get('/', function (req, res) {
+    res.send('Welcome!');
+});
 
-//for creating file
-fs.writeFile('Calc1.js', 'console.log("done")', function (err) {
-    console.log("file saved")
-})
+app.get('/user', function (req, res) {
+    //getting id using query string ex:- url?id=2
+    const id = req.query.id
+    res.send('Welcome user ' + id + "!");
+});
 
-//for appending file
-fs.appendFile('Calc1.js', 'console.log("done")',function (err) {
-    console.log("file appended")
-})
+app.get('/user/:id', function (req, res) {
+    //getting id using param string ex:- url/id=2
+    const id = req.params.id
+    res.send('Welcome user ' + id + "!");
+});
 
-//for deleting file
-fs.unlink('Calc1.js',function(err)
-{
-    console.log("Deleted")
-})
-
-http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/html' })
-    res.end(fileData)
-}
-).listen(8080)
+var server = app.listen(8080, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log('Example app listening at http://%s:%s', host, port);
+});  
